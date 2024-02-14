@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffe6e6; /* Light pink background */
+        }
+
+        #valentine-container {
+            text-align: center;
+        }
+
+        #valentine-gif {
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        #buttons-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            position: absolute;
+        }
+
+        #yes-button {
+            background-color: #ff6666; /* Red */
+            color: #fff;
+            padding: 20px 40px; /* Larger size */
+            left: 45%; /* Centered horizontally */
+            transform: translateX(-50%); /* Centered horizontally */
+        }
+
+        #no-button {
+            background-color: #4CAF50; /* Green */
+            color: #fff;
+        }
+		#confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            background: #ff6666; /* Yellow confetti color */
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: confettiAnimation 3s ease-out infinite;
+        }
+
+        @keyframes confettiAnimation {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body onmousemove="moveButton(event)">
+    <div id="valentine-container">
+        <h1 id="valentine-title">Will you be my valentine Bebe?</h1>
+		<div id="result-message" style="display: none; font-size: 25px; color: #ff6666;"></div>
+        <img id="valentine-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXN4ODJqYzc3cXd4cHJia2N0enU2bzQ1NGJzY2o3ZXk5dXlvbnJ5NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8QbwUh40Hl96yMgvOx/giphy.gif" alt="Valentine's Day GIF">
+        <div id="buttons-container">
+            <button id="yes-button" class="button" onclick="showYay()">Yes</button>
+            <button id="no-button" class="button">No</button>
+        </div>
+    </div>
+	<div id="confetti-container"></div>
+
+    <script>
+        function showYay() {
+            const titleElement = document.getElementById("valentine-title");
+            const messageElement = document.getElementById("result-message");
+
+            titleElement.innerText = "Happy Valentine's Day, my Bebe! 😍";
+            messageElement.innerText = "Your love is my favorite melody, and every day with you is a sweet symphony <3";
+            messageElement.style.color = "#ff6666"; // Red color for the message
+            messageElement.style.display = "block";
+
+            // Change the GIF
+            const gifElement = document.getElementById("valentine-gif");
+            gifElement.src = "https://media.giphy.com/media/cnjJxuGVQGN3O/giphy.gif"; // Replace with the path to your kiss GIF
+        
+			// Trigger confetti animation
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.getElementById("confetti-container");
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDelay = `${Math.random() * 3}s`; // Add random delay
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        function getDistance(element, event) {
+            const rect = element.getBoundingClientRect();
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const distance = Math.sqrt((rect.left - mouseX) ** 2 + (rect.top - mouseY) ** 2);
+            return distance;
+        }
+
+        function moveButton(event) {
+            const button = document.getElementById("no-button");
+            const distanceThreshold = 50; // Adjust this value as needed
+
+            const distance = getDistance(button, event);
+
+            if (distance < distanceThreshold) {
+                const x = Math.random() * (window.innerWidth - button.clientWidth);
+                const y = Math.random() * (window.innerHeight - button.clientHeight);
+
+                button.style.left = `${x}px`;
+                button.style.top = `${y}px`;
+            }
+        }
+    </script>
+</body>
+</html>
